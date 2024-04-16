@@ -4,7 +4,7 @@ import spacy
 import pandas as pd
 
 # Load the biomedical NER model
-nlp_bc = spacy.load("en_core_med7_lg")
+nlp_bc = spacy.load("en_ner_bc5cdr_md")
 
 # Function to extract entities from the transcription
 def extract_entities(transcription):
