@@ -1,40 +1,68 @@
-# app.py
-import streamlit as st
 import spacy
-import pandas as pd
+import streamlit as st
+from spacy.matcher import Matcher
+from PyPDF2 import PdfReader
 
-# Load the biomedical NER model
-nlp_bc = en_core_med7_trf.load()
+# Load the custom medical NER model
+model_path = "en_ner_bc5cdr_md-0.5.1"
+nlp_bc = spacy.load(model_path)
 
-# Function to extract entities from the transcription
-def extract_entities(transcription):
-    doc = nlp_bc(transcription)
-    entities_info = []
+# Initialize Matcher for identifying drug doses
+matcher = Matcher(nlp_bc.vocab)
+pattern = [{'ENT_TYPE': 'CHEMICAL'}, {'LIKE_NUM': True}, {'IS_ASCII': True}]
+matcher.add("DRUG_DOSE", [pattern])
+
+# Function to perform NER and identify entities
+def perform_ner(text):
+    doc = nlp_bc(text)
+    entities = []
+    drug_doses = []
     for ent in doc.ents:
-        entities_info.append({
-            "Text": ent.text,
-            "Start": ent.start_char,
-            "End": ent.end_char,
-            "Label": ent.label_
-        })
-    return entities_info
+        entities.append((ent.label_, ent.text))
+    matches = matcher(doc)
+    for match_id, start, end in matches:
+        span = doc[start:end]
+        drug_doses.append((nlp_bc.vocab.strings[match_id], span.text))
+    return entities, drug_doses
 
-# Main function to run the Streamlit app
+# Streamlit app
 def main():
-    st.title("Biomedical Entity Extraction")
-    st.write("Enter your transcription below:")
+    st.title("Medical NER from PDF")
+    st.write("Upload a PDF file to extract text and identify medical entities.")
 
-    # Text input for transcription
-    transcription = st.text_area("Transcription:")
+    uploaded_file = st.file_uploader("Upload PDF", type="pdf")
 
-    if transcription:
-        # Extract entities from the transcription
-        entities = extract_entities(transcription)
+    if uploaded_file is not None:
+        # Read PDF file
+        text = ""
+        with st.spinner("Extracting text from PDF..."):
+            text = extract_text_from_pdf(uploaded_file)
 
-        if entities:
-            # Display entity information in a table
-            st.subheader("Entities Information:")
-            st.write(pd.DataFrame(entities))
+        st.write("### Extracted Text:")
+        st.write(text)
 
-if __name__ == "__main__":
-    main()
+        # Perform NER
+        with st.spinner("Performing NER..."):
+            entities, drug_doses = perform_ner(text)
+
+        # Display identified entities
+        st.write("### Identified Entities:")
+        for label, entity in entities:
+            st.write(f"- {label}: {entity}")
+
+        # Display identified drug doses
+        st.write("### Identified Drug Doses:")
+        for label, dose in drug_doses:
+            st.write(f"- {label}: {dose}")
+
+# Function to extract text from PDF
+def extract_text_from_pdf(uploaded_file):
+    text = ""
+    with st.spinner("Extracting text from PDF..."):
+        pdf_reader = PdfReader(uploaded_file)
+        for page in pdf_reader.pages:
+            text += page.extract_text()
+    return text
+
+# Call the main function
+main()
