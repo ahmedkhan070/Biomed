@@ -1,6 +1,7 @@
 # app.py
 import streamlit as st
 import spacy
+import pandas as pd
 
 # Load the biomedical NER model
 nlp_bc = spacy.load("en_core_med7")
