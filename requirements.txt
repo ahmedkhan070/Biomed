@@ -1,3 +1,4 @@
 spacy
+scispacy
 en_core_sci_md
 pandas
