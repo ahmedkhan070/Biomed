@@ -1,13 +1,13 @@
 # Named Entity Recognition (NER)
 
-Named Entity Recognition (NER) is a key task in Natural Language Processing (NLP) that involves identifying and classifying named entities in text. Named entities typically include persons, organizations, locations, dates, and other specific categories. NER is used in a variety of applications such as information extraction, question answering, and text summarization.
+Named Entity Recognition (NER) is a crucial task in Natural Language Processing (NLP) that involves identifying and classifying named entities within text. Named entities typically include persons, organizations, locations, dates, and other specific categories.
 
 ## How NER Works
 
-NER involves several steps:
+NER involves several key steps:
 
 1. **Preprocessing**: 
-    - Text undergoes preprocessing such as tokenization, part-of-speech tagging, and sentence segmentation.
+    - Text undergoes preprocessing such as tokenization, part-of-speech tagging, and sentence segmentation to prepare it for analysis.
 
 2. **Feature Extraction**:
     - Features such as word embeddings and contextual embeddings are extracted from the text to provide context for named entity classification.
@@ -24,21 +24,30 @@ NER involves several steps:
 5. **Inference**:
     - Trained models are used to predict named entities in new, unseen text.
 
-## Applications of NER
+## Code Explanation
 
-NER is widely used in various NLP applications such as:
+The provided code uses deep learning and spaCy to perform NER:
 
-- **Information Extraction**: Extracting structured data from unstructured text.
-- **Question Answering**: Identifying relevant entities in questions and answers.
-- **Text Summarization**: Identifying key entities for generating concise summaries.
-- **Sentiment Analysis**: Understanding sentiment associated with different named entities.
-- **Document Classification**: Classifying documents based on the entities they contain.
+- **Importing Libraries**:
+    - The code imports libraries such as spaCy for text processing and the biomedical model `en_ner_bc5cdr_md`.
+    
+- **Loading the Model**:
+    - The model is loaded using `spacy.load()` with the specified model name (`en_ner_bc5cdr_md`).
+
+- **Processing Text**:
+    - Input text is processed using the loaded model. The model tokenizes the text and performs named entity recognition.
+    
+- **Extracting Named Entities**:
+    - The model extracts named entities from the processed text and classifies them into categories such as persons, organizations, locations, etc.
+    
+- **Printing Results**:
+    - The code iterates through the extracted named entities and prints their text, start and end positions, and classification labels.
 
 ## How to Use NER in Your Projects
 
 To use NER in your NLP projects:
 
-1. **Choose an NER Model**: Select a model based on your requirements and resources. Popular options include spaCy, Stanford NER, and Transformer-based models like BERT and BioBERT for specialized domains.
+1. **Choose an NER Model**: Select a model based on your requirements and resources. Popular options include spaCy, Stanford NER, and Transformer-based models like BERT.
 
 2. **Prepare Data**: Prepare training and validation datasets with labeled entities.
 
@@ -49,6 +58,13 @@ To use NER in your NLP projects:
 5. **Deploy the Model**: Use the trained model for named entity recognition in your application.
 
 6. **Monitor and Improve**: Monitor the model's performance and make improvements as needed.
+
+## References
+
+- [spaCy Documentation](https://spacy.io/usage)
+- [BERT (Bidirectional Encoder Representations from Transformers)](https://github.com/google-research/bert)
+- [BioBERT (Biomedical BERT)](https://github.com/dmis-lab/biobert)
+- [Stanford NER Tool](https://nlp.stanford.edu/software/CRF-NER.shtml)
 
 ## Conclusion
 
