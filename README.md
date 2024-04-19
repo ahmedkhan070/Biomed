@@ -62,8 +62,7 @@ To use NER in your NLP projects:
 ## References
 
 - [spaCy Documentation](https://spacy.io/usage)
-- [BERT (Bidirectional Encoder Representations from Transformers)](https://github.com/google-research/bert)
-- [BioBERT (Biomedical BERT)](https://github.com/dmis-lab/biobert)
+- [Reference Website with Dataset](https://www.analyticsvidhya.com/blog/2023/02/extracting-medical-information-from-clinical-text-with-nlp/)
 - [Stanford NER Tool](https://nlp.stanford.edu/software/CRF-NER.shtml)
 
 ## Conclusion
